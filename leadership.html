@@ -159,11 +159,34 @@
       box-shadow: 0 10px 28px rgba(0,0,0,0.14);
     }
 
+    /* CLICKABLE IMAGE */
     .leader-image {
       width: 100%;
       height: 300px;
       overflow: hidden;
       background: #e5e7eb;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .leader-image::after {
+      content: "🔍  Click to enlarge";
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.65);
+      color: white;
+      padding: 7px 13px;
+      border-radius: 20px;
+      font-size: 12px;
+      opacity: 0;
+      transition: 0.3s;
+      white-space: nowrap;
+    }
+
+    .leader-image:hover::after {
+      opacity: 1;
     }
 
     .leader-image img {
@@ -171,6 +194,11 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .leader-image:hover img {
+      transform: scale(1.05);
     }
 
     .leader-info {
@@ -198,13 +226,98 @@
       font-size: 14px;
     }
 
-    /* FEATURED LEADERS */
+    /* FEATURED PRESIDENT */
     .featured {
       grid-column: span 3;
     }
 
     .featured .leader-image {
       height: 390px;
+    }
+
+    /* ==============================
+       IMAGE POPUP / LIGHTBOX
+    ============================== */
+
+    .image-modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.94);
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .image-modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      max-width: 92%;
+      max-height: 88vh;
+      object-fit: contain;
+      border: 5px solid white;
+      border-radius: 12px;
+      box-shadow: 0 0 35px rgba(255,255,255,0.25);
+      animation: zoomIn 0.3s ease;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 18px;
+      right: 25px;
+      color: white;
+      font-size: 45px;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
+      z-index: 10000;
+      transition: 0.3s;
+    }
+
+    .close-modal:hover {
+      color: #fbbf24;
+      transform: scale(1.15);
+    }
+
+    .modal-name {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.75);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+      text-align: center;
+      max-width: 90%;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.75);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
     /* FOOTER */
@@ -250,8 +363,9 @@
       color: #bbb;
     }
 
-    /* MOBILE */
+    /* TABLET */
     @media (max-width: 900px) {
+
       nav {
         display: none;
         position: absolute;
@@ -286,7 +400,9 @@
       }
     }
 
+    /* MOBILE */
     @media (max-width: 600px) {
+
       header {
         padding: 12px 5%;
       }
@@ -340,6 +456,23 @@
       .footer-grid {
         grid-template-columns: 1fr;
       }
+
+      .modal-content {
+        max-width: 96%;
+        max-height: 80vh;
+        border-width: 3px;
+      }
+
+      .close-modal {
+        top: 12px;
+        right: 18px;
+        font-size: 38px;
+      }
+
+      .modal-name {
+        font-size: 13px;
+        bottom: 15px;
+      }
     }
   </style>
 </head>
@@ -381,6 +514,7 @@
   <section class="hero">
     <div class="hero-content">
       <h1>Our Leadership</h1>
+
       <p>
         Meet the dedicated leaders working together to advance good governance,
         accountability, responsible leadership and sustainable development in Ibaji.
@@ -391,6 +525,7 @@
 
   <!-- INTRO -->
   <section class="intro">
+
     <h2>Leadership Team</h2>
 
     <p>
@@ -398,10 +533,11 @@
       dedicated to promoting transparency, community development, good governance,
       accountability and positive social change.
     </p>
+
   </section>
 
 
-  <!-- LEADERSHIP SECTION -->
+  <!-- LEADERSHIP -->
   <section class="leadership-section">
 
     <div class="leadership-grid">
@@ -409,16 +545,23 @@
       <!-- PRESIDENT -->
       <div class="leader-card featured">
 
-        <div class="leader-image">
+        <div class="leader-image"
+             onclick="openImage(
+               'https://i.ibb.co/h1HgQf95/file-000000005d80820788a5dd1160464dcd.png',
+               'Comr. Reuben E. Napoleon'
+             )">
+
           <img
             src="https://i.ibb.co/h1HgQf95/file-000000005d80820788a5dd1160464dcd.png"
             alt="Comr. Reuben E. Napoleon"
           >
+
         </div>
 
         <div class="leader-info">
           <h3>Comr. Reuben E. Napoleon</h3>
           <div class="position">President</div>
+
           <p>
             Providing strategic leadership and direction for the Ibaji Restoration Foundation.
           </p>
@@ -430,16 +573,23 @@
       <!-- VICE PRESIDENT -->
       <div class="leader-card">
 
-        <div class="leader-image">
+        <div class="leader-image"
+             onclick="openImage(
+               'https://i.ibb.co/RpVcSd4P/IMG-20260902-WA0019-1.jpg',
+               'Comr. Eric Emmanuel'
+             )">
+
           <img
             src="https://i.ibb.co/RpVcSd4P/IMG-20260902-WA0019-1.jpg"
             alt="Comr. Eric Emmanuel"
           >
+
         </div>
 
         <div class="leader-info">
           <h3>Comr. Eric Emmanuel</h3>
           <div class="position">Vice President</div>
+
           <p>
             Supporting the leadership and programmes of the Foundation.
           </p>
@@ -451,16 +601,23 @@
       <!-- GENERAL SECRETARY -->
       <div class="leader-card">
 
-        <div class="leader-image">
+        <div class="leader-image"
+             onclick="openImage(
+               'https://i.ibb.co/rRBFCV7N/IMG-20260902-WA0017-1.jpg',
+               'Comr. Solomon Ugbede Abraham'
+             )">
+
           <img
             src="https://i.ibb.co/rRBFCV7N/IMG-20260902-WA0017-1.jpg"
             alt="Comr. Solomon Ugbede Abraham"
           >
+
         </div>
 
         <div class="leader-info">
           <h3>Comr. Solomon Ugbede Abraham</h3>
           <div class="position">General Secretary</div>
+
           <p>
             Coordinating administrative activities, records and official communication.
           </p>
@@ -472,16 +629,23 @@
       <!-- TREASURER -->
       <div class="leader-card">
 
-        <div class="leader-image">
+        <div class="leader-image"
+             onclick="openImage(
+               'https://i.ibb.co/Xfs9fjxB/IMG-20260902-WA0023-1.jpg',
+               'Comr. Succes Friday'
+             )">
+
           <img
             src="https://i.ibb.co/Xfs9fjxB/IMG-20260902-WA0023-1.jpg"
             alt="Comr. Succes Friday"
           >
+
         </div>
 
         <div class="leader-info">
           <h3>Comr. Succes Friday</h3>
           <div class="position">Treasurer</div>
+
           <p>
             Responsible for financial stewardship and proper management of Foundation resources.
           </p>
@@ -493,16 +657,23 @@
       <!-- FINANCIAL SECRETARY -->
       <div class="leader-card">
 
-        <div class="leader-image">
+        <div class="leader-image"
+             onclick="openImage(
+               'https://i.ibb.co/WN39MWSG/IMG-20260902-WA0112.jpg',
+               'Comr. Egboh Ojonukpe Destiny'
+             )">
+
           <img
             src="https://i.ibb.co/WN39MWSG/IMG-20260902-WA0112.jpg"
             alt="Comr. Egboh Ojonukpe Destiny"
           >
+
         </div>
 
         <div class="leader-info">
           <h3>Comr. Egboh Ojonukpe Destiny</h3>
           <div class="position">Financial Secretary</div>
+
           <p>
             Supporting financial documentation, accountability and financial administration.
           </p>
@@ -514,16 +685,23 @@
       <!-- BOARD OF TRUSTEE CHAIRMAN -->
       <div class="leader-card">
 
-        <div class="leader-image">
+        <div class="leader-image"
+             onclick="openImage(
+               'https://i.ibb.co/MyBwQSgZ/IMG-20260902-WA0024.jpg',
+               'Comr. Godwin Ene-ojo Thomas'
+             )">
+
           <img
             src="https://i.ibb.co/MyBwQSgZ/IMG-20260902-WA0024.jpg"
             alt="Comr. Godwin Ene-ojo Thomas"
           >
+
         </div>
 
         <div class="leader-info">
           <h3>Comr. Godwin Ene-ojo Thomas</h3>
           <div class="position">Board of Trustee Chairman</div>
+
           <p>
             Providing oversight, guidance and strategic support to the Foundation.
           </p>
@@ -535,16 +713,23 @@
       <!-- PATRON -->
       <div class="leader-card">
 
-        <div class="leader-image">
+        <div class="leader-image"
+             onclick="openImage(
+               'https://i.ibb.co/277BTC29/IMG-20260902-WA0034.jpg',
+               'Engr. John Ibrahim Ocheje'
+             )">
+
           <img
             src="https://i.ibb.co/277BTC29/IMG-20260902-WA0034.jpg"
             alt="Engr. John Ibrahim Ocheje"
           >
+
         </div>
 
         <div class="leader-info">
           <h3>Engr. John Ibrahim Ocheje</h3>
           <div class="position">Patron</div>
+
           <p>
             Providing experience, encouragement and support towards the Foundation's vision.
           </p>
@@ -557,22 +742,42 @@
   </section>
 
 
+  <!-- IMAGE MODAL -->
+  <div class="image-modal" id="imageModal" onclick="closeImage(event)">
+
+    <span class="close-modal" onclick="closeImage()">×</span>
+
+    <img
+      class="modal-content"
+      id="modalImage"
+      src=""
+      alt="Enlarged leadership photo"
+    >
+
+    <div class="modal-name" id="modalName"></div>
+
+  </div>
+
+
   <!-- FOOTER -->
   <footer>
 
     <div class="footer-grid">
 
       <div class="footer-col">
+
         <h3>Ibaji Restoration Foundation</h3>
 
         <p>
           Agitating for Good Governance, accountability, responsible leadership
           and sustainable community development.
         </p>
+
       </div>
 
 
       <div class="footer-col">
+
         <h3>Quick Links</h3>
 
         <a href="index.html">Home</a>
@@ -583,10 +788,12 @@
         <a href="news.html">News</a>
         <a href="gallery.html">Gallery</a>
         <a href="contact.html">Contact</a>
+
       </div>
 
 
       <div class="footer-col">
+
         <h3>Contact Us</h3>
 
         <p>NO 1 MR INEKWE HOUSE</p>
@@ -597,6 +804,7 @@
         <p>📞 07065421850</p>
         <p>📞 08185911238</p>
         <p>✉️ ibajirestorationfoundation@gmail.com</p>
+
       </div>
 
     </div>
@@ -609,17 +817,77 @@
   </footer>
 
 
-  <!-- MOBILE MENU SCRIPT -->
+  <!-- JAVASCRIPT -->
   <script>
+
+    /* MOBILE MENU */
     function toggleMenu() {
       document.getElementById("mainNav").classList.toggle("show");
     }
 
-    document.querySelectorAll("#mainNav a").forEach(function(link) {
-      link.addEventListener("click", function() {
-        document.getElementById("mainNav").classList.remove("show");
-      });
+
+    /* OPEN IMAGE */
+    function openImage(imageSrc, personName) {
+
+      const modal = document.getElementById("imageModal");
+      const modalImage = document.getElementById("modalImage");
+      const modalName = document.getElementById("modalName");
+
+      modalImage.src = imageSrc;
+      modalName.textContent = personName;
+
+      modal.classList.add("show");
+
+      document.body.style.overflow = "hidden";
+    }
+
+
+    /* CLOSE IMAGE */
+    function closeImage(event) {
+
+      /* If clicking the image itself, don't close */
+      if (
+        event &&
+        event.target &&
+        event.target.id === "modalImage"
+      ) {
+        return;
+      }
+
+      const modal = document.getElementById("imageModal");
+
+      modal.classList.remove("show");
+
+      document.body.style.overflow = "auto";
+    }
+
+
+    /* CLOSE WITH ESC KEY */
+    document.addEventListener("keydown", function(event) {
+
+      if (event.key === "Escape") {
+
+        const modal = document.getElementById("imageModal");
+
+        modal.classList.remove("show");
+
+        document.body.style.overflow = "auto";
+      }
+
     });
+
+
+    /* CLOSE MOBILE MENU AFTER CLICKING LINK */
+    document.querySelectorAll("#mainNav a").forEach(function(link) {
+
+      link.addEventListener("click", function() {
+
+        document.getElementById("mainNav").classList.remove("show");
+
+      });
+
+    });
+
   </script>
 
 </body>
